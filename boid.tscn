@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://sprites/boid.png" type="Texture" id=1]
+[ext_resource path="res://boid.gd" type="Script" id=2]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 50.1417
+
+[node name="boid" type="KinematicBody2D" groups=[
+"boid",
+]]
+collision_layer = 2
+script = ExtResource( 2 )
+
+[node name="body" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+flip_v = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( 0.0459328, 6.40444, -7.2903, -6.67704, 7.82411, -6.58865 )
+
+[node name="detection_radius" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="detection_radius"]
+shape = SubResource( 1 )
+[connection signal="body_entered" from="detection_radius" to="." method="_on_detection_radius_body_entered"]
+[connection signal="body_exited" from="detection_radius" to="." method="_on_detection_radius_body_exited"]
