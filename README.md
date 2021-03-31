@@ -1,6 +1,6 @@
 # Godot Boids Example
 
-Simple flocking / boids implementation in Godot / GDScript.
+Simple [flocking / boids](https://en.wikipedia.org/wiki/Boids) implementation in Godot / GDScript.
 
 ![Boids example](https://github.com/viniciusgerevini/godot-boids/blob/main/flocking_sample.gif)
 
