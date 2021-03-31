@@ -2,8 +2,8 @@ extends KinematicBody2D
 
 var _max_speed = 2
 var _speed = 2
-var _separation_distance = 20
 var _direction = Vector2(0, 1)
+var _separation_distance = 20
 
 var _local_flockmates = []
 
@@ -17,7 +17,6 @@ func _physics_process(_delta):
 	else:
 		_direction = _flock_direction()
 
-
 func _collision_reaction_direction(collision):
 	return (collision.position - collision.normal).direction_to(self.position)
 
@@ -28,7 +27,7 @@ func _flock_direction():
 	var cohesion = Vector2()
 
 	for flockmate in _local_flockmates:
-		heading += flockmate.get_heading()
+		heading += flockmate.get_direction()
 		cohesion += flockmate.position
 
 		var distance = self.position.distance_to(flockmate.position)
@@ -43,10 +42,10 @@ func _flock_direction():
 		var center_speed = _max_speed * self.position.distance_to(cohesion) / $detection_radius/CollisionShape2D.shape.radius
 		cohesion = center_direction * center_speed
 
-	return ((separation * 0.5) + _direction + (heading * 0.5) + (cohesion * 0.1)).clamped(_max_speed)
+	return (_direction + separation * 0.5 + heading * 0.5 + cohesion * 0.5).clamped(_max_speed)
 
 
-func get_heading():
+func get_direction():
 	return _direction
 
 
