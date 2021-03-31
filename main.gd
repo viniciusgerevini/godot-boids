@@ -2,6 +2,7 @@ extends Node2D
 
 const Boid = preload("res://boid.tscn")
 
+# add a boid on mouse click
 func _unhandled_input(event):
 	if event is InputEventMouseButton and  event.button_index == BUTTON_LEFT and event.pressed:
 		_create_boid()

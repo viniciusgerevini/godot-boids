@@ -1,5 +1,13 @@
 extends KinematicBody2D
 
+# these weights where defined through
+# trial and error. You can play with them
+# to check how they affect the flock.
+const SEPARATION_WEIGHT = 0.5
+const ALIGNMENT_WEIGHT = 0.5
+const COHESION_WEIGHT = 0.1
+
+
 var _max_speed = 2
 var _speed = 2
 var _direction = Vector2(0, 1)
@@ -17,10 +25,15 @@ func _physics_process(_delta):
 	else:
 		_direction = _flock_direction()
 
+
+# Inverts the direction when hitting a collider.
+# This implementation handles colliding with Tilemaps specifically.
 func _collision_reaction_direction(collision):
 	return (collision.position - collision.normal).direction_to(self.position)
 
 
+# This function is pretty much all you need for calculating
+# the flocking movement
 func _flock_direction():
 	var separation = Vector2()
 	var heading = _direction
@@ -42,7 +55,12 @@ func _flock_direction():
 		var center_speed = _max_speed * self.position.distance_to(cohesion) / $detection_radius/CollisionShape2D.shape.radius
 		cohesion = center_direction * center_speed
 
-	return (_direction + separation * 0.5 + heading * 0.5 + cohesion * 0.5).clamped(_max_speed)
+	return (
+		_direction +
+		separation * SEPARATION_WEIGHT +
+		heading * ALIGNMENT_WEIGHT +
+		cohesion * COHESION_WEIGHT
+	).clamped(_max_speed)
 
 
 func get_direction():
